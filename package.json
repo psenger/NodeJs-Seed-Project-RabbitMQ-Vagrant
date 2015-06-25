@@ -1,5 +1,5 @@
 {
-  "name": "sample-amqp",
+  "name": "RabbitMQWithNodeJS",
   "version": "0.0.0",
   "private": true,
   "dependencies": {
