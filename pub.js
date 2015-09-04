@@ -5,7 +5,7 @@
 "use strict";
 var amqp = require('amqp');
 
-var connection = amqp.createConnection({ host: 'localhost' });
+var connection = amqp.createConnection({ host: '10.1.1.2' });
 
 
 /**
