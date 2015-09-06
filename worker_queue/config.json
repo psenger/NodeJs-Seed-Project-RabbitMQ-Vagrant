@@ -1,4 +1,5 @@
 {
   "host": "10.1.1.2",
-  "queue": "my_sample_queue_name"
+  "exchange": "statistics_exchange",
+  "queue": "word_count_queue"
 }

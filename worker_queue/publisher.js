@@ -1,10 +1,10 @@
 /**
- * Created by Philip A Senger on 24/06/15.
+ * Created by philip senger on 24/06/15.
  */
-
 "use strict";
-
 var amqp = require('amqp'),
+    randomWords = require('random-words'),
+    sleep = require('sleep'),
     config = require('./config.json'),
     connection = amqp.createConnection(config);
 
@@ -15,58 +15,71 @@ var amqp = require('amqp'),
  * @param high
  * @returns {number}
  */
-function randomNumber(low, high) {
+function randomNumber (low, high) {
     return Math.floor(Math.random() * (high - low + 1) + low);
 }
 
-/**
- * Send a Message
- *
- * @param connection
- * @param queue_name
- * @param payload
- */
-function sendMessage(connection, queue_name, payload) {
-    console.log('Sending a message: ' + payload.name);
-
-    var encoded_payload = JSON.stringify(payload);
-
-    connection.queue( queue_name, { durable: true, autoDelete : true }, function (queue) {
-        console.log('Queue ' + queue.name + ' is open');
-
-        queue.publish( queue_name, encoded_payload, {}, function(){
-            console.log('published ', arguments );
-        });
-
-    } );
-
-}
-
-//connection.addListener('ready', function onReady() {
-//    var count = 0;
-//    // setInterval(function () {
-//        var sample = {
-//            name: 'My hovercraft is full of eels ' + count,
-//            time: randomNumber(1000, 4000)
-//        };
-//        sendMessage(connection, config.queue, sample);
-//        count += 1;
-//   //  }, 2000);
-//    console.log('done');
-//});
-
-
-// Wait for connection to become established.
 connection.on('ready', function () {
-    // Use the default 'amq.topic' exchange
-    connection.queue('my-queue', function (q) {
-        // Catch all messages
-        q.bind('#');
+    // The direct exchange is pretty simple: if the routing key matches,
+    // then the message is delivered to the corresponding queue.
+    var exchange_options = {
+        type: 'fanout',
+        confirm: true,
+        passive: false,
+        autoDelete: false,
+        durable: true
+    };
+    var publish_options = {
+        contentType: 'application/json',
+        contentEncoding: 'UTF-8'
+    };
+    console.log('connection ready');
+    connection.exchange(config.exchange, exchange_options, function (exchange) {
+        console.log( config.exchange + ' ready');
+        connection.queue(config.queue, function(queue) {
+            console.log( config.queue + ' ready');
+            queue.on('queueBindOk', function() {
+                console.log('bind successful');
+            });
+            queue.bind(exchange, "*");
 
-        // Receive messages
-        q.subscribe(function (message) {
-            // Print messages to stdout
-            console.log(message);
+            /**
+             * this is designed to run every 3 seconds.
+             */
+            var interval = setInterval(function(){
+
+                // build payload with some random words.
+                var payload =  {
+                    words: randomWords( { min: 50, max: 100, join: ' ' } )
+                };
+                var body = JSON.stringify(payload);
+
+                console.log('Sending a message');
+
+                exchange.publish("message.text", body, publish_options , function(error){
+                    /**
+                     * called if the exchange is in confirm mode, the value sent will be true or false,
+                     * this is the presence of a error so true, means an error occurred and false,
+                     * means the publish was successful
+                     **/
+                    if ( error ) {
+                        console.error(error);
+                    }
+                });
+
+                // sleep from 1 to 10 seconds.
+                sleep.sleep( randomNumber(1,10) );
+
+            }, ( 1000 * 3 ) );
+
         });
     });
+    // console.log('destroy');
+    // connection.destroy();
+});
+connection.on('error', function(e) {
+   console.log('error ' + JSON.stringify(e,'\t',4));
+});
+connection.on('close', function(e) {
+    console.log('close ' + JSON.stringify(e,'\t',4));
 });
