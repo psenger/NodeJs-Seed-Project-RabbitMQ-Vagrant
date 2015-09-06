@@ -1,6 +1,6 @@
 Vagrant.configure('2') do |config|
 
-	config.vm.box = 'puppetlabs/centos-6.6-64-puppet'
+  config.vm.box = 'puppetlabs/centos-6.6-64-puppet'
   config.vm.box_url = 'https://atlas.hashicorp.com/puppetlabs/boxes/centos-6.6-64-puppet'
 
   if Vagrant.has_plugin?('vagrant-hostmanager')

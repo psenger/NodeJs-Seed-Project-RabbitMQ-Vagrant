@@ -1,0 +1,4 @@
+{
+  "host": "10.1.1.2",
+  "queue": "my_sample_queue_name"
+}

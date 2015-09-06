@@ -9,12 +9,15 @@ mobile: 0406770664 |
 [LinkedIn](http://au.linkedin.com/in/philipsenger) |
 [twitter](http://twitter.com/PSengerDownUndr)
 
-
 ### About
 
-This Vagrant box contains vagrant and puppet recipes for creating a CentOS 6 system with RabbitMQ and RabbitMQ Web Management. In addition, there are two Node JS apps one called ```sub.js``` and the other ```pub.js```.
+This project contains a Vagrant controlled Sun Virtual Machine with a Puppet recipe to build a server based on CentOS 6 with RabbitMQ and RabbitMQ Web Management. In addition it contains a simple consumer and publisher  example written in Node JS, see ```worker_queue/consumer.js```  and ```worker_queue/publisher.js```.
 
-pub and sub put messages in a queue and respond, in an infinite loop. I created this project so I could easily build a Service Orchestration example in NodeJS and run it locally. 
+Running publisher puts the process in a infinite loop with random words in a JSON payload, while the consumer ( an infinite loop too ) simply counts the words and sends it to the console.
+
+The exchange and queue are durable, but the ack is set when the message is pulled form the queue and not from the process. Something I would like to work on later.
+
+I want to also add a reply to queue, but will have to do that later. I intend on adding more types of patterns to this project as time goes on.
 
 ### Install
 
