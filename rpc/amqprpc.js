@@ -4,18 +4,24 @@
 var amqp = require('amqp'),
     uuid = require('node-uuid');
 
-var TIMEOUT=2000; //time to wait for response in ms
-var CONTENT_TYPE='application/json';
-var CONTENT_ENCODING='utf-8';
+var _TIMEOUT=2000; //time to wait for response in ms
+var _CONTENT_TYPE='application/json';
+var _CONTENT_ENCODING='utf-8';
 
-exports = module.exports = AmqpRpc;
-
-function AmqpRpc(connection){
+var AmqpRpc = function AmqpRpc ( connection, timeout, contentType, encoding ) {
     var self = this;
+
     this.connection = connection;
-    this.requests = {}; //hash to store request in wait for response
-    this.response_queue = false; //plaseholder for the future queue
-}
+    this.timeout = timeout || _TIMEOUT;
+    this.contentType = contentType || _CONTENT_TYPE;
+    this.encoding = encoding || _CONTENT_ENCODING;
+
+    // object literal used to store requests waiting for responses.
+    this.requests = {};
+
+    // place holder for future queue.
+    this.response_queue = false;
+};
 
 AmqpRpc.prototype.makeRequest = function(queue_name, content, callback){
     var self = this;
@@ -28,15 +34,15 @@ AmqpRpc.prototype.makeRequest = function(queue_name, content, callback){
         callback(new Error("timeout " + corr_id));
         //delete the entry from hash
         delete self.requests[corr_id];
-    }, TIMEOUT, correlationId);
+    }, self.timeout , correlationId);
 
-    //create a request entry to store in a hash
+    // create a request entry to store in a hash
     var entry = {
         callback:callback,
         timeout: tId //the id for the timeout so we can clear it
     };
 
-    //put the entry in the hash so we can match the response later
+    // put the entry in the hash so we can match the response later
     self.requests[correlationId]=entry;
 
     //make sure we have a response queue
@@ -44,16 +50,18 @@ AmqpRpc.prototype.makeRequest = function(queue_name, content, callback){
         //put the request on a queue
         self.connection.publish(queue_name, content, {
             correlationId:correlationId,
-            contentType:CONTENT_TYPE,
-            contentEncoding:CONTENT_ENCODING,
+            contentType:self.contentType,
+            contentEncoding:self.encoding,
             replyTo:self.response_queue});
     });
 };
 
 
 AmqpRpc.prototype.setupResponseQueue = function(next){
-    //don't mess around if we have a queue
-    if(this.response_queue) return next();
+    // don't mess around if we have a queue
+    if(this.response_queue) {
+        return next();
+    }
 
     var self = this;
     //create the queue
@@ -79,3 +87,5 @@ AmqpRpc.prototype.setupResponseQueue = function(next){
         return next();
     });
 };
+
+module.exports = AmqpRpc;

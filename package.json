@@ -6,6 +6,7 @@
     "amqp": "^0.2.4",
     "random-words": "0.0.1",
     "sleep": "^3.0.0",
-    "node-uuid": "^1.4.3"
+    "node-uuid": "^1.4.3",
+    "bluebird": "^2.9.34"
   }
 }

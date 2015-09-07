@@ -11,8 +11,8 @@ connection.on('ready', function () {
     connection.queue(config.queue, function (queue) {
         queue.subscribe(function (message, headers, deliveryInfo, m) {
 
+            // ------
             util.log(util.format(deliveryInfo.routingKey, message));
-
             var wordCnt = ( message.msg ) ? message.msg.split(' ').length : 0;
             var characterCnt = ( message.msg ) ? message.msg.length : 0;
             var histogram = {};
@@ -23,14 +23,13 @@ connection.on('ready', function () {
                     histogram[c] = histogram[c] ? 1 + histogram[c] : 1;
                 }
             }
-
             var payload = {
                 wordCnt:wordCnt,
                 characterCnt:characterCnt,
                 histogram:histogram
             };
+            // ------
 
-            //return index sent
             connection.publish(m.replyTo, payload, {
                 contentType: 'application/json',
                 contentEncoding: 'utf-8',
