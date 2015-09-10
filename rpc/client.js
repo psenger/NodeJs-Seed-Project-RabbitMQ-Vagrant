@@ -18,12 +18,11 @@ connection.once("ready", function () {
         };
 
         rpc.makeRequest( config.queue, body )
-            //.timeout(100)
             .then(function (result) {
                 console.log(result);
                 connection.end();
             })
-            .catch(TimeoutError, function (e) {
+            .catch(Promise.TimeoutError, function (e) {
                 throw new Error("Failed to fulfill makeRequest within the specified timeout.");
             });
 
