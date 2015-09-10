@@ -1,18 +1,22 @@
 
 var amqp = require('amqp'),
     config = require('./config.json'),
-    util = require('util');
+    util = require('util' ),
+    sleep = require('sleep');
 
 var connection = amqp.createConnection(config);
 
 connection.on('ready', function () {
-    console.log("listening on " + config.queue);
+    // console.log("listening on " + config.queue);
 
     connection.queue(config.queue, function (queue) {
         queue.subscribe(function (message, headers, deliveryInfo, m) {
 
+            // sleep.sleep(5); // sleep for 5 seconds.
+
             // ------
             util.log(util.format(deliveryInfo.routingKey, message));
+
             var wordCnt = ( message.msg ) ? message.msg.split(' ').length : 0;
             var characterCnt = ( message.msg ) ? message.msg.length : 0;
             var histogram = {};
@@ -29,6 +33,8 @@ connection.on('ready', function () {
                 histogram:histogram
             };
             // ------
+
+
 
             connection.publish(m.replyTo, payload, {
                 contentType: 'application/json',
