@@ -4,7 +4,6 @@
 "use strict";
 var amqp = require('amqp'),
     randomWords = require('random-words'),
-    sleep = require('sleep'),
     config = require('./config.json'),
     connection = amqp.createConnection(config);
 
@@ -68,7 +67,7 @@ connection.on('ready', function () {
                 });
 
                 // sleep from 1 to 10 seconds.
-                sleep.sleep( randomNumber(1,10) );
+                // setTimeout( function(){ console.log('done'); }, randomNumber(1,10) );
 
             }, ( 1000 * 3 ) );
 

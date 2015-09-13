@@ -2,7 +2,8 @@
  * Created by Philip A Senger on 9/7/15.
  */
 var uuid = require ( 'node-uuid' ),
-    curry = require ( 'curry' );
+    curry = require ( 'curry'),
+    Promise = require('bluebird');
 
 var _TIMEOUT = 2000; //time to wait for response in ms
 var _CONTENT_TYPE = 'application/json';
