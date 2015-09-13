@@ -11,7 +11,9 @@ mobile: 0406770664 |
 
 ### About
 
-This project contains a Vagrant controlled Sun Virtual Machine with a Puppet recipe to build a server based on CentOS 6 with RabbitMQ and RabbitMQ Web Management. In addition it contains a simple consumer and publisher  example written in Node JS, see ```worker_queue/consumer.js```  and ```worker_queue/publisher.js```.
+This project contains a Vagrant controlled Sun Virtual Machine with a Puppet recipe to build a server based on CentOS 6 with RabbitMQ and RabbitMQ Web Management. 
+
+In addition it contains a simple consumer and publisher example written in Node JS, see ```worker_queue/consumer.js```  and ```worker_queue/publisher.js``` and a RPC example in the directory ```rpc```. Im still refining the RPC example, but uses Bluebird promises. I would like to use Time Out and build something in that will throttle the clients. 
 
 Running publisher puts the process in a infinite loop with random words in a JSON payload, while the consumer ( an infinite loop too ) simply counts the words and sends it to the console.
 
