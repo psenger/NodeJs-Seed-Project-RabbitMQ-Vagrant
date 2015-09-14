@@ -15,7 +15,7 @@ This project contains a Vagrant controlled Sun Virtual Machine with a Puppet rec
 
 ### Why
 
-If you are reading this, you may wonder why I built this project. Using a Message Queue is vital to creating an elastic services. It allows the decoupling of components in a n-tier fashion and allows the cpu intensive component to be decoupled from the web-tier component. 
+If you are reading this, you may wonder why I built this project. Using a Message Queue is vital to creating an elastic service. It allows the decoupling of components in a n-tier fashion and allows the cpu intensive component to be decoupled from the web-tier component. 
 
 There are only two design patterns in this project a simple Worker Queue and a Remote Procedure Call. I wrote this in Node JS because I already know how to do this with Java and I wanted to see what it would look like with NodeJS. 
 ### What is next
