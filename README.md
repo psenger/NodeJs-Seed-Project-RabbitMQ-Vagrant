@@ -11,7 +11,7 @@ mobile: 0406770664 |
 
 ### About
 
-This project contains a Vagrant controlled Sun Virtual Machine with a Puppet recipe to build a server based on CentOS 6 with RabbitMQ and RabbitMQ Web Management. 
+This project contains a Vagrant controlled Sun Virtual Machine with a Puppet recipe to build a server based on CentOS 6 with RabbitMQ and RabbitMQ Web Management. It contains two examples of NodeJS Design patterns Worker Queue and RPC. I have implemented the RPC example as a Bluebird Promise with a timeout.
 
 ### Why
 
