@@ -7,7 +7,7 @@ var amqp = require('amqp'),
     connection = amqp.createConnection(config),
     Promise = require('bluebird');
 
-var rpc = new (require('./amqprpc'))(connection);
+var rpc = new (require('./amqprpc'))(connection,5000);
 
 connection.once("ready", function () {
     console.log("ready");
@@ -25,8 +25,9 @@ connection.once("ready", function () {
                 console.log(result);
                 connection.end();
             })
-            .catch(Promise.TimeoutError, function (e) {
-                throw new Error("Failed to fulfill makeRequest within the specified timeout.");
-            });
+            .catch(function (e) {
+                console.error('Failed to fulfill makeRequest within the specified timeout.', e);
+                connection.end();
+            } );
 
 });

@@ -13,8 +13,6 @@ connection.on('ready', function () {
     connection.queue(config.queue, function (queue) {
         queue.subscribe(function (message, headers, deliveryInfo, m) {
 
-            // sleep.sleep(5); // sleep for 5 seconds.
-
             // ------
             util.log(util.format(deliveryInfo.routingKey, message));
 
@@ -35,13 +33,14 @@ connection.on('ready', function () {
             };
             // ------
 
+            //var timeoutID =  setTimeout(function(){ // simulate work being done for 3 seconds.
+                connection.publish(m.replyTo, payload, {
+                    contentType: 'application/json',
+                    contentEncoding: 'utf-8',
+                    correlationId: m.correlationId
+                });
+            //},3000);
 
-
-            connection.publish(m.replyTo, payload, {
-                contentType: 'application/json',
-                contentEncoding: 'utf-8',
-                correlationId: m.correlationId
-            });
         });
     });
 });

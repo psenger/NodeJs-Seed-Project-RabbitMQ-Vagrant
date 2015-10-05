@@ -11,7 +11,19 @@ mobile: 0406770664 |
 
 ### About
 
-This project contains a Vagrant controlled Sun Virtual Machine with a Puppet recipe to build a server based on CentOS 6 with RabbitMQ and RabbitMQ Web Management. 
+This project contains a Vagrant controlled Sun Virtual Machine with a Puppet recipe to build a server based on CentOS 6 with RabbitMQ and RabbitMQ Web Management. It contains two examples of NodeJS Design patterns Worker Queue and RPC. I have implemented the RPC example as a Bluebird Promise with a timeout.
+
+### Why
+
+If you are reading this, you may be wonder why I built this project. Using a Message Queue is vital to creating an elastic service. It allows the decoupling of components in a n-tier fashion. For example it allows cpu intensive components to be decoupled from the lower demanding cpu components. This allows infrastructure to provision more costly equipment to where it is needed.
+
+There are only two design patterns in this project a simple Worker Queue and a Remote Procedure Call. I wrote this in Node JS because I already know how to do this with Java and I wanted to see what it would look like with NodeJS. 
+
+### What is next
+
+What I would like to do next is build a Socket IO service that pushes REST requests via a RPC Message Queues.  
+
+### How
 
 In addition it contains a simple consumer and publisher example written in Node JS, see ```worker_queue/consumer.js```  and ```worker_queue/publisher.js``` and a RPC example in the directory ```rpc```. Im still refining the RPC example, but uses Bluebird promises. I would like to use Time Out and build something in that will throttle the clients. 
 
