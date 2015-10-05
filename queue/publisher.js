@@ -4,6 +4,7 @@
 "use strict";
 var amqp = require('amqp'),
     randomWords = require('random-words'),
+    sleep = require('sleep'),
     config = require('./config.json'),
     connection = amqp.createConnection(config);
 
@@ -47,7 +48,9 @@ connection.on('ready', function () {
              */
             var interval = setInterval(function(){
 
-                // build payload with some random words.
+                /**
+                 * build payload with some random words.
+                 */
                 var payload =  {
                     words: randomWords( { min: 50, max: 100, join: ' ' } )
                 };
@@ -66,8 +69,10 @@ connection.on('ready', function () {
                     }
                 });
 
-                // sleep from 1 to 10 seconds.
-                // setTimeout( function(){ console.log('done'); }, randomNumber(1,10) );
+                /**
+                 * sleep from 1 to 10 seconds.
+                 */
+                sleep.sleep( randomNumber(1,10) );
 
             }, ( 1000 * 3 ) );
 
@@ -76,9 +81,11 @@ connection.on('ready', function () {
     // console.log('destroy');
     // connection.destroy();
 });
+
 connection.on('error', function(e) {
    console.log('error ' + JSON.stringify(e,'\t',4));
 });
+
 connection.on('close', function(e) {
     console.log('close ' + JSON.stringify(e,'\t',4));
 });

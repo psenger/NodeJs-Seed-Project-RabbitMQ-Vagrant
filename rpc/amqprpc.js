@@ -24,35 +24,27 @@ AmqpRpc.prototype.makeRequest = function makeRequest ( queue_name, content ) {
     return self.setupResponseQueue ( self.connection )
             .then ( function ( setup ) {
                 var sub = new Promise ( function ( resolve, reject ) {
-                                        var responseQueue = setup.responseQueue;
-                                        var callBack = curry ( self.worker );
-                                        responseQueue.subscribe ( callBack ( correlationId, resolve, reject ) );
+                                            var responseQueue = setup.responseQueue;
+                                            var callBack = curry ( self.worker );
+                                            responseQueue.subscribe ( callBack ( correlationId, resolve, reject ) );
                                     } );
                 var pub = new Promise ( function ( resolve, reject ) {
-                                        var responseQueue = setup.responseQueue;
-                                        var connection = setup.connection;
-                                        var payload = {
-                                            correlationId: correlationId,
-                                            contentType: self.contentType,
-                                            contentEncoding: self.encoding,
-                                            replyTo: responseQueue.name
-                                        };
-                                        connection.publish ( queue_name, content, payload );
-                                        resolve ( true );
+                                            var responseQueue = setup.responseQueue;
+                                            var connection = setup.connection;
+                                            var payload = {
+                                                correlationId: correlationId,
+                                                contentType: self.contentType,
+                                                contentEncoding: self.encoding,
+                                                replyTo: responseQueue.name
+                                            };
+                                            connection.publish ( queue_name, content, payload );
+                                            resolve ( true );
                                     } );
-                return new Promise ( function ( resolve, reject ) {
-                                        Promise.join ( sub, pub, function ( subResult, pubResult ) {
-                                            resolve ( subResult );
-                                        } );
-                                    } )
-                                    .cancellable()
-                                    .timeout(1000);
-                        //.catch(Promise.CancellationError, function(error) {
-                        //    console.error( error );
-                        //})
-                        //.catch ( Promise.TimeoutError, function ( error ) {
-                        //    console.log('Task ' + name + ' timed out', error);
-                        //} );
+                return Promise.join ( sub, pub, function ( subResult, pubResult ) {
+                                                    return subResult;
+                                                } )
+                                .cancellable()
+                                .timeout(self.timeout);
     } );
 };
 

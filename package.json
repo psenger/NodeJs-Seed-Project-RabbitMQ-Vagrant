@@ -1,10 +1,39 @@
 {
-  "name": "RabbitMQWithNodeJS",
-  "version": "0.0.0",
-  "private": true,
+  "name": "NodeJs-Seed-Project-RabbitMQ-Vagrant",
+  "version": "1.0.0",
+  "description": "This project contains a Vagrant controlled Sun Virtual Machine with a Puppet recipe to build a server based on CentOS 6 with RabbitMQ and RabbitMQ Web Management. It contains two examples of NodeJS Design patterns Worker Queue and RPC. I have implemented the RPC example as a Bluebird Promise with a timeout.",
+  "main": "index.js",
+  "dependencies": {
+    "amqp": "~0.2.4",
+    "bluebird": "~2.10.0",
+    "curry": "~1.2.0",
+    "node-uuid": "~1.4.3",
+    "random-words": "~0.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://psenger@github.com/psenger/NodeJs-Seed-Project-RabbitMQ-Vagrant.git"
+  },
+  "keywords": [
+    "NodeJS",
+    "RabbitMQ",
+    "Seed Project",
+    "Vagrant"
+  ],
+  "author": "Philip A Senger",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/psenger/NodeJs-Seed-Project-RabbitMQ-Vagrant/issues"
+  },
+  "homepage": "https://github.com/psenger/NodeJs-Seed-Project-RabbitMQ-Vagrant",
   "dependencies": {
     "amqp": "^0.2.4",
     "random-words": "0.0.1",
+    "sleep": "^3.0.0",
     "node-uuid": "^1.4.3",
     "bluebird": "^2.9.34",
     "curry": "^1.2.0"

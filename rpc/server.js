@@ -1,6 +1,4 @@
-/**
- * Created by Philip A Senger
- */
+
 var amqp = require('amqp'),
     config = require('./config.json'),
     util = require('util' );

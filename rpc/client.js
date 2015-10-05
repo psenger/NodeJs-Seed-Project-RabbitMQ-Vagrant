@@ -1,11 +1,8 @@
-/**
- * Created by Philip A Senger
- */
+//exmaple on how to use amqprpc
 var amqp = require('amqp'),
     config = require('./config.json'),
     randomWords = require('random-words'),
-    connection = amqp.createConnection(config),
-    Promise = require('bluebird');
+    connection = amqp.createConnection(config);
 
 var rpc = new (require('./amqprpc'))(connection,5000);
 
